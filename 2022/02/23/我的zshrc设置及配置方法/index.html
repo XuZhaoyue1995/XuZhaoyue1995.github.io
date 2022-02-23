@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="编程语言：Python, Fortran, C++">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        我的zshrc设置及配置方法 - XuZhaoyueBlog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> CFD </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar ">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>许昭越</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#zshrc%E9%85%8D%E7%BD%AE"><span class="toc-text">.zshrc配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="toc-text">插件介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#last-working-dir"><span class="toc-text">last-working-dir</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#wd"><span class="toc-text">wd</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#zsh-autosuggestions"><span class="toc-text">zsh-autosuggestions</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fast-syntax-highlighting"><span class="toc-text">fast-syntax-highlighting</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> CFD </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        我的zshrc设置及配置方法
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-02-23 20:03:48</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>通常，我们选用<code>zsh</code>来进行一些方便的设置。在<code>zsh</code>中配置个人目录下的<code>.zshrc</code>并安装相关插件。 </p>
+<h3 id="zshrc配置"><a href="#zshrc配置" class="headerlink" title=".zshrc配置"></a><code>.zshrc</code>配置</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"># If you come from bash you might have to change your $PATH.</span><br><span class="line"># export PATH=$HOME/bin:/usr/local/bin:$PATH</span><br><span class="line"></span><br><span class="line"># Path to your oh-my-zsh installation.</span><br><span class="line">export ZSH=$HOME/.oh-my-zsh</span><br><span class="line">ZSH_DISABLE_COMPFIX=&quot;true&quot;</span><br><span class="line"># Set name of the theme to load --- if set to &quot;random&quot;, it will</span><br><span class="line"># load a random theme each time oh-my-zsh is loaded, in which case,</span><br><span class="line"># to know which specific one was loaded, run: echo $RANDOM_THEME</span><br><span class="line"># See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes</span><br><span class="line">ZSH_THEME=&quot;arrow&quot;</span><br><span class="line"></span><br><span class="line"># Set list of themes to pick from when loading at random</span><br><span class="line"># Setting this variable when ZSH_THEME=random will cause zsh to load</span><br><span class="line"># a theme from this variable instead of looking in $ZSH/themes/</span><br><span class="line"># If set to an empty array, this variable will have no effect.</span><br><span class="line"># ZSH_THEME_RANDOM_CANDIDATES=( &quot;robbyrussell&quot; &quot;agnoster&quot; )</span><br><span class="line"></span><br><span class="line"># Uncomment the following line to use case-sensitive completion.</span><br><span class="line"># CASE_SENSITIVE=&quot;true&quot;</span><br><span class="line"></span><br><span class="line"># Uncomment the following line to use hyphen-insensitive completion.</span><br><span class="line"># Case-sensitive completion must be off. _ and - will be interchangeable.</span><br><span class="line"># HYPHEN_INSENSITIVE=&quot;true&quot;</span><br><span class="line"></span><br><span class="line"># Uncomment one of the following lines to change the auto-update behavior</span><br><span class="line"># zstyle &#x27;:omz:update&#x27; mode disabled  # disable automatic updates</span><br><span class="line"># zstyle &#x27;:omz:update&#x27; mode auto      # update automatically without asking</span><br><span class="line"># zstyle &#x27;:omz:update&#x27; mode reminder  # just remind me to update when it&#x27;s time</span><br><span class="line"></span><br><span class="line"># Uncomment the following line to change how often to auto-update (in days).</span><br><span class="line"># zstyle &#x27;:omz:update&#x27; frequency 13</span><br><span class="line"></span><br><span class="line"># Uncomment the following line if pasting URLs and other text is messed up.</span><br><span class="line"># DISABLE_MAGIC_FUNCTIONS=&quot;true&quot;</span><br><span class="line"></span><br><span class="line"># Uncomment the following line to disable colors in ls.</span><br><span class="line"># DISABLE_LS_COLORS=&quot;true&quot;</span><br><span class="line"></span><br><span class="line"># Uncomment the following line to disable auto-setting terminal title.</span><br><span class="line"># DISABLE_AUTO_TITLE=&quot;true&quot;</span><br><span class="line"></span><br><span class="line"># Uncomment the following line to enable command auto-correction.</span><br><span class="line"># ENABLE_CORRECTION=&quot;true&quot;</span><br><span class="line"></span><br><span class="line"># Uncomment the following line to display red dots whilst waiting for completion.</span><br><span class="line"># You can also set it to another string to have that shown instead of the default red dots.</span><br><span class="line"># e.g. COMPLETION_WAITING_DOTS=&quot;%F&#123;yellow&#125;waiting...%f&quot;</span><br><span class="line"># Caution: this setting can cause issues with multiline prompts in zsh &lt; 5.7.1 (see #5765)</span><br><span class="line"># COMPLETION_WAITING_DOTS=&quot;true&quot;</span><br><span class="line"></span><br><span class="line"># Uncomment the following line if you want to disable marking untracked files</span><br><span class="line"># under VCS as dirty. This makes repository status check for large repositories</span><br><span class="line"># much, much faster.</span><br><span class="line"># DISABLE_UNTRACKED_FILES_DIRTY=&quot;true&quot;</span><br><span class="line"></span><br><span class="line"># Uncomment the following line if you want to change the command execution time</span><br><span class="line"># stamp shown in the history command output.</span><br><span class="line"># You can set one of the optional three formats:</span><br><span class="line"># &quot;mm/dd/yyyy&quot;|&quot;dd.mm.yyyy&quot;|&quot;yyyy-mm-dd&quot;</span><br><span class="line"># or set a custom format using the strftime function format specifications,</span><br><span class="line"># see &#x27;man strftime&#x27; for details.</span><br><span class="line"># HIST_STAMPS=&quot;mm/dd/yyyy&quot;</span><br><span class="line"></span><br><span class="line"># Would you like to use another custom folder than $ZSH/custom?</span><br><span class="line"># ZSH_CUSTOM=/path/to/new-custom-folder</span><br><span class="line"></span><br><span class="line"># Which plugins would you like to load?</span><br><span class="line"># Standard plugins can be found in $ZSH/plugins/</span><br><span class="line"># Custom plugins may be added to $ZSH_CUSTOM/plugins/</span><br><span class="line"># Example format: plugins=(rails git textmate ruby lighthouse)</span><br><span class="line"># Add wisely, as too many plugins slow down shell startup.</span><br><span class="line">plugins=(git last-working-dir wd zsh-autosuggestions fast-syntax-highlighting)</span><br><span class="line"></span><br><span class="line">source $ZSH/oh-my-zsh.sh</span><br><span class="line"></span><br><span class="line"># User configuration</span><br><span class="line"></span><br><span class="line"># export MANPATH=&quot;/usr/local/man:$MANPATH&quot;</span><br><span class="line"></span><br><span class="line"># You may need to manually set your language environment</span><br><span class="line"># export LANG=en_US.UTF-8</span><br><span class="line"></span><br><span class="line"># Preferred editor for local and remote sessions</span><br><span class="line"># if [[ -n $SSH_CONNECTION ]]; then</span><br><span class="line">#   export EDITOR=&#x27;vim&#x27;</span><br><span class="line"># else</span><br><span class="line">#   export EDITOR=&#x27;mvim&#x27;</span><br><span class="line"># fi</span><br><span class="line"></span><br><span class="line"># Compilation flags</span><br><span class="line"># export ARCHFLAGS=&quot;-arch x86_64&quot;</span><br><span class="line"></span><br><span class="line"># Set personal aliases, overriding those provided by oh-my-zsh libs,</span><br><span class="line"># plugins, and themes. Aliases can be placed here, though oh-my-zsh</span><br><span class="line"># users are encouraged to define aliases within the ZSH_CUSTOM folder.</span><br><span class="line"># For a full list of active aliases, run alias.</span><br><span class="line">#</span><br><span class="line"># Example aliases</span><br><span class="line"># alias zshconfig=&quot;mate ~/.zshrc&quot;</span><br><span class="line"># alias ohmyzsh=&quot;mate ~/.oh-my-zsh&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="插件介绍"><a href="#插件介绍" class="headerlink" title="插件介绍"></a>插件介绍</h3><h4 id="last-working-dir"><a href="#last-working-dir" class="headerlink" title="last-working-dir"></a>last-working-dir</h4><p>该插件会在进入时记住关闭shell时所在的工作目录</p>
+<h4 id="wd"><a href="#wd" class="headerlink" title="wd"></a>wd</h4><p>wd是一种快捷改变目录的指令<br>查看映射列表<br><code>wd list</code><br>添加映射名为xxx<br><code>wd add xxx</code><br>移除映射<br><code>wd rm xxx</code><br>跳转到指定映射<br><code>wd xxx</code>            </p>
+<h4 id="zsh-autosuggestions"><a href="#zsh-autosuggestions" class="headerlink" title="zsh-autosuggestions"></a>zsh-autosuggestions</h4><p>该插件会自动补全之前输入过的命令<br>安装方法<code>git clone https://github.com/zsh-users/zsh-autosuggestions $&#123;ZSH_CUSTOM:-~/.oh-my-zsh/custom&#125;/plugins/zsh-autosuggestions</code></p>
+<h4 id="fast-syntax-highlighting"><a href="#fast-syntax-highlighting" class="headerlink" title="fast-syntax-highlighting"></a>fast-syntax-highlighting</h4><p>快速高亮语法<br>安装方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/zdharma/fast-syntax-highlighting.git \</span><br><span class="line">  ~/.oh-my-zsh/custom/plugins/fast-syntax-highlighting</span><br></pre></td></tr></table></figure>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>  Theme <a target="_blank" rel="noopener" href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
