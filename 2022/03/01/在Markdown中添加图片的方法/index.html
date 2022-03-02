@@ -11,7 +11,7 @@
 
     <title>
         
-        Hello World - XuZhaoyueBlog
+        在Markdown中添加图片的方法 - XuZhaoyueBlog
         
     </title>
 
@@ -93,7 +93,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+    
 </div>
     
 </div>
@@ -124,11 +124,11 @@
 
 <div class="post-container">
     <div class="post-title">
-        Hello World
+        在Markdown中添加图片的方法
     </div>
 
     <div class="post-meta">
-        <span class="attr">发布于：<span>2021-12-02 14:18:33</span></span>
+        <span class="attr">发布于：<span>2022-03-01 10:53:57</span></span>
         
         <span class="attr">标签：/
         
@@ -142,15 +142,7 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+        <p>我们通过把图片存入Markdown文件的方法保存图片。我们用base64转码将图片转换成字符串，然后将字符串填入图片引用格式。<br>转换的代码为<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line">f=<span class="built_in">open</span>(<span class="string">&#x27;pic.png&#x27;</span>,<span class="string">&#x27;rb&#x27;</span>) <span class="comment">#二进制方式打开图文件</span></span><br><span class="line">ls_f=base64.b64encode(f.read()) <span class="comment">#读取文件内容，转换为base64编码</span></span><br><span class="line">f.close()</span><br><span class="line">f=<span class="built_in">open</span>(<span class="string">&#x27;pic.txt&#x27;</span>,<span class="string">&#x27;wb&#x27;</span>)</span><br><span class="line">f.write(ls_f)</span><br></pre></td></tr></table></figure><br>需要转换的图片为<code>pic.png</code>，得到的字符串文件为<code>pic.txt</code>。<br>然后引用图片<code>![avatar][pic1]</code>并在文档末尾添加<code>[pic1]:data:image/png;base64,pic.txt内的内容</code>。多幅图片同理。</p>
 
         
         <br />
