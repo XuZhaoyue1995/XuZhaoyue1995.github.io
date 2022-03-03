@@ -11,7 +11,7 @@
 
     <title>
         
-        markdown中支持高亮显示的语言 - XuZhaoyueBlog
+        Hexo博客在aircloud主题中引用Bilibili视频的方法 - XuZhaoyueBlog
         
     </title>
 
@@ -124,11 +124,11 @@
 
 <div class="post-container">
     <div class="post-title">
-        markdown中支持高亮显示的语言
+        Hexo博客在aircloud主题中引用Bilibili视频的方法
     </div>
 
     <div class="post-meta">
-        <span class="attr">发布于：<span>2022-03-02 11:23:11</span></span>
+        <span class="attr">发布于：<span>2022-03-03 14:06:57</span></span>
         
         <span class="attr">标签：/
         
@@ -142,7 +142,15 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        <p>支持高亮的代码块有：<code>1c, abnf, accesslog, actionscript, ada, apache, applescript, arduino, armasm, asciidoc, aspectj, autohotkey, autoit, avrasm, awk, axapta, bash, basic, bnf, brainfuck, cal, capnproto, ceylon, clean, clojure, clojure-repl, cmake, coffeescript, coq, cos, cpp, crmsh, crystal, cs, csp, css, d, dart, delphi, diff, django, dns, dockerfile, dos, dsconfig, dts, dust, ebnf, elixir, elm, erb, erlang, erlang-repl, excel, fix, flix, fortran, fsharp, gams, gauss, gcode, gherkin, glsl, go, golo, gradle, groovy, haml, handlebars, haskell, haxe, hsp, htmlbars, http, hy, inform7, ini, irpf90, java, javascript, json, julia, kotlin, lasso, ldif, leaf, less, lisp, livecodeserver, livescript, llvm, lsl, lua, makefile, markdown, mathematica, matlab, maxima, mel, mercury, mipsasm, mizar, mojolicious, monkey, moonscript, n1ql, nginx, nimrod, nix, nsis, objectivec, ocaml, openscad, oxygene, parser3, perl, pf, php, pony, powershell, processing, profile, prolog, protobuf, puppet, purebasic, python, q, qml, r, rib, roboconf, rsl, ruby, ruleslanguage, rust, scala, scheme, scilab, scss, smali, smalltalk, sml, sqf, sql, stan, stata, step21, stylus, subunit, swift, taggerscript, tap, tcl, tex, thrift, tp, twig, typescript, vala, vbnet, vbscript, vbscript-html, verilog, vhdl, vim, x86asm, xl, xml, xquery, yaml, zephir</code><br>用法：<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">```xxx</span></span><br><span class="line"><span class="code">#code</span></span><br><span class="line"><span class="code">```</span></span><br></pre></td></tr></table></figure></p>
+        <p>有时，我们希望在博客中插入动画或引入视频。选择没有广告的Bilibili网站作为引用源是非常合适的选择。<br>在不用插件的情况下用官方的iframe方式引入视频，默认的方式导入视频屏幕会很小，调整控制参数则会导致不同设备浏览不能适配。</p>
+<div>
+    <iframe src="//player.bilibili.com/player.html?aid=424390748&bvid=BV1i3411j7WR&cid=518600683&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+</div>
+
+<p>为了适配，我们在<code>hexo\themes\aircloud\source\css</code>中添加代码<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*哔哩哔哩视频适配*/</span></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.bilibili</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">height</span>: <span class="number">0</span>;              <span class="comment">/*高度设置这里无效，设置为0，用padding撑开div*/</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">75%</span>;    <span class="comment">/*68%到80%都可以*/</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.bilibili</span> <span class="selector-tag">iframe</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>然后我们就可以得到适配后的视频</p>
+<p><div class="bilibili">
+    <iframe src="//player.bilibili.com/player.html?aid=424390748&bvid=BV1i3411j7WR&cid=518600683&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+</div><br>插入视频的具体用法为：<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;bilibili&quot;</span>&gt;</span></span></span><br><span class="line"><span class="code">	&lt;iframe src=&quot;//player.bilibili.com/player.html?aid=424390748&amp;bvid=BV1i3411j7WR&amp;cid=518600683&amp;page=1&quot; scrolling=&quot;no&quot; border=&quot;0&quot; frameborder=&quot;no&quot; framespacing=&quot;0&quot; allowfullscreen=&quot;true&quot;&gt; &lt;/iframe&gt;</span></span><br><span class="line"><span class="code">&lt;/div&gt;</span></span><br></pre></td></tr></table></figure></p>
 
         
         <br />
