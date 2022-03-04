@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="编程语言：Python, Fortran, C++">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        OpenFOAM并行计算入门方法 - XuZhaoyueBlog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> CFD </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar ">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>许昭越</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E8%A7%A3%E7%BD%91%E6%A0%BC%E5%92%8C%E5%88%9D%E5%A7%8B%E5%9C%BA"><span class="toc-text">分解网格和初始场</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%B1%82%E8%A7%A3"><span class="toc-text">并行计算求解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8E%E5%A4%84%E7%90%86"><span class="toc-text">后处理</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> CFD </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        OpenFOAM并行计算入门方法
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-03-04 15:00:38</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#CFD" title="CFD">CFD</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#OpenFOAM" title="OpenFOAM">OpenFOAM</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>OpenFOAM使用的并行计算方法是域分解方法。其将网格几何和对应场被分解成多个部分，并分配给分布式处理器求解。默认使用<code>OpenMPI</code>作为信息传输接口。<br>OpenFOAM的并行计算主要分为三个步骤：<br>1.分解网格和流场<br>2.并行求解<br>3.对分解后的结果进行后处理</p>
+<h4 id="分解网格和初始场"><a href="#分解网格和初始场" class="headerlink" title="分解网格和初始场"></a>分解网格和初始场</h4><p>OpenFOAM利用<code>decomposePar</code>指令分解网格和流场。分解的目标是在保证计算效率的情况下使用尽可能简洁的指令分解计算域。 在算例目录<code>system</code>中的字典文件<code>decomposeParDict</code>内预先设定了一系列的参数，网格和流场会根据这一系列的参数进行分解。一个典型的字典文件<code>decomposeParDict</code>可以在<code>$FOAM_TUTORIAL/incompressible/simpleFoam/motorBike</code>中找到。<br>在字典文件中，<code>method</code>关键词后我们可以选择四种分解方法。<br>1.<code>simple</code>：将几何在不同的方向上分为指定数量的块，例如：x轴方向上分解为2块，y轴方向上分解为3块；<br>2.<code>hierarchical</code>：与<code>simple</code>方法相同，区别是分解顺序由用户指定。<br>3.<code>scotch</code>：用户可以通过可选的<code>processorWeights</code>指令指定不同处理器上网格量的权重，更多用法详见<code>$FOAM_SRC/parallel/decompose/scotchDecomp/scotchDecomp.C</code><br>4.<code>manual</code>：用户直接指定计算单元给特定的处理器。<br>不同的方法有其对应的参数，这些参数在<code>decompositionDict</code>中给定。<br>设定好参数后，执行指令进行网格分解：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">decomposePar</span><br></pre></td></tr></table></figure></p>
+<h4 id="并行计算求解"><a href="#并行计算求解" class="headerlink" title="并行计算求解"></a>并行计算求解</h4><p>执行指令，并行计算机将在当前shell中进行计算<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mpirun -np &lt;nProcs&gt; &lt;foamExec&gt; -parallel</span><br></pre></td></tr></table></figure><br><code>&lt;nProcs&gt;</code>是计算使用的核心数，<code>&lt;foamExec&gt;</code>是求解器名称。<br>在超级计算机中，我们通常使用<code>bash</code>脚本提交命令<code>sbatsh sub</code>，<code>sub</code>文件内容为<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH -p amd_256</span></span><br><span class="line"><span class="comment">#SBATCH -N 2</span></span><br><span class="line"><span class="comment">#SBATCH -n 128</span></span><br><span class="line"></span><br><span class="line">mpirun -np 128 icoFoam -parallel</span><br></pre></td></tr></table></figure><br>在通常情况下，分解与计算的结果将保存在一系列子文件夹中，文件夹名为<code>processor&lt;N&gt;</code>，<code>&lt;N&gt;</code>对应处理器序号且包含了一系列的时间结果。在算例目录<code>constant/polyMesh</code>中保存着网格分解结果。 </p>
+<h4 id="后处理"><a href="#后处理" class="headerlink" title="后处理"></a>后处理</h4><p>后处理将<code>processor&lt;N&gt;</code>文件目录下的计算结果合并到一个时间序列下，我们使用指令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reconstructPar</span><br></pre></td></tr></table></figure></p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>  Theme <a target="_blank" rel="noopener" href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
