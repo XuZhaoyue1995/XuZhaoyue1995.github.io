@@ -11,7 +11,7 @@
 
     <title>
         
-        Pointwise中T-Rex功能的应用 - XuZhaoyueBlog
+        OpenFOAM清除结果指令 - XuZhaoyueBlog
         
     </title>
 
@@ -124,18 +124,15 @@
 
 <div class="post-container">
     <div class="post-title">
-        Pointwise中T-Rex功能的应用
+        OpenFOAM清除结果指令
     </div>
 
     <div class="post-meta">
-        <span class="attr">发布于：<span>2022-03-09 16:50:43</span></span>
+        <span class="attr">发布于：<span>2022-03-14 11:09:03</span></span>
         
         <span class="attr">标签：/
         
-        <a class="tag" href="/tags/#CFD" title="CFD">CFD</a>
-        <span>/</span>
-        
-        <a class="tag" href="/tags/#pointwise" title="pointwise">pointwise</a>
+        <a class="tag" href="/tags/#OpenFOAM" title="OpenFOAM">OpenFOAM</a>
         <span>/</span>
         
         
@@ -145,7 +142,8 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        <p>在生成了非结构网格后，我们如果想在壁面附近生长长方形的规则网格，需要使用T-Rex功能。<br>选择Grid-&gt;T-Rex<br>进入后首先在左侧Boundary Condition选项卡中勾选边界，并设定第一层网格尺寸。<br>然后点击T-Rex设定生长层数和每层生长的比例，点选长方形网格。<br>在Attributes选项卡中选择求解方法和外围网格形状。<br>最后在Solve选项卡中点击Initial生成。</p>
+        <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foamListTimes -noZero | xargs rm -rf</span><br></pre></td></tr></table></figure>
+<p><code>xargs</code>（英文全拼： eXtended ARGuments）是给命令传递参数的一个过滤器，也是组合多个命令的一个工具。xargs 是一个强有力的命令，它能够捕获一个命令的输出，然后传递给另外一个命令。之所以能用到这个命令，关键是由于很多命令不支持|管道来传递参数。<code>foamListTimes -noZero</code>会输出计算的非零步，每一列输出一个非零步，<code>xargs</code>则会将不同列的非零步整合到一行中并以空格隔开。</p>
 
         
         <br />
