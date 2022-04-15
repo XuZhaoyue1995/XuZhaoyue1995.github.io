@@ -11,7 +11,7 @@
 
     <title>
         
-        XuZhaoyueBlog
+        OpenFOAM后处理的三种方法及Python脚本的编写 - XuZhaoyueBlog
         
     </title>
 
@@ -57,7 +57,7 @@
     </div>
     <div class="contents" id="nav-content">
         <ul>
-            <li  class=active >
+            <li >
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
                     <span>主页</span>
@@ -92,6 +92,10 @@
         </ul>
     </div>
     
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E5%A4%84%E7%90%86%E7%9A%84%E8%BF%90%E8%A1%8C"><span class="toc-text">后处理的运行</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#postProcess"><span class="toc-text">postProcess</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B1%82%E8%A7%A3%E5%99%A8-postProcess-func"><span class="toc-text">求解器 -postProcess -func</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E6%B1%82%E8%A7%A3%E5%99%A8"><span class="toc-text">直接求解器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8Python%E8%84%9A%E6%9C%AC%E8%BF%90%E8%A1%8COpenFOAM%E5%90%8E%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4"><span class="toc-text">用Python脚本运行OpenFOAM后处理指令</span></a></li></ol>
+</div>
+    
 </div>
 
 
@@ -116,177 +120,46 @@
     <div class="index-middle">
         <!-- Main Content -->
         
-<div class="post-preview-container" style="min-height: 720px">
-    
-    <div class="post-preview">
-        <div class="post-time">2022-03-03</div>
-        <div class="post-info">
-            <a href="/2022/03/03/在Hexo中引用Bilibili视频的方法/">
-                <h3>
-                    Hexo博客在aircloud主题中引用Bilibili视频的方法
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
-                <span>/</span>
-                
-                
-            </p>
-        </div>
+
+
+<div class="post-container">
+    <div class="post-title">
+        OpenFOAM后处理的三种方法及Python脚本的编写
     </div>
-    
-    <div class="post-preview">
-        <div class="post-time">2022-03-02</div>
-        <div class="post-info">
-            <a href="/2022/03/02/markdown中支持高亮显示的语言/">
-                <h3>
-                    markdown中支持高亮显示的语言
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
-                <span>/</span>
-                
-                
-            </p>
-        </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-03-30 10:45:22</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#OpenFOAM" title="OpenFOAM">OpenFOAM</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
     </div>
-    
-    <div class="post-preview">
-        <div class="post-time">2022-03-01</div>
-        <div class="post-info">
-            <a href="/2022/03/01/在Markdown中添加图片的方法/">
-                <h3>
-                    在Markdown中添加图片的方法
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
-                <span>/</span>
-                
-                
-            </p>
+    <div class="post-content no-indent">
+        <h3 id="后处理的运行"><a href="#后处理的运行" class="headerlink" title="后处理的运行"></a>后处理的运行</h3><p>实现提取的方法可使用postProcess、求解器 -postProcess -func或直接运行求解器。</p>
+<h4 id="postProcess"><a href="#postProcess" class="headerlink" title="postProcess"></a>postProcess</h4><p>命令格式：<code>postProcess -func funcName</code> </p>
+<h4 id="求解器-postProcess-func"><a href="#求解器-postProcess-func" class="headerlink" title="求解器 -postProcess -func"></a>求解器 -postProcess -func</h4><p>命令格式：<code>solverName postProcess  -func funcName -latestTime</code></p>
+<p>后面latestTime选项是对设置仅处理最终步时间，不加则可以处理所有时间。</p>
+<h4 id="直接求解器"><a href="#直接求解器" class="headerlink" title="直接求解器"></a>直接求解器</h4><p>适用于所有求解器，前两种有些求解器不适用。<br>先在system/controlDict内最后添加functions</p>
+<p>之后运行求解时会自动进行后处理。</p>
+<h3 id="用Python脚本运行OpenFOAM后处理指令"><a href="#用Python脚本运行OpenFOAM后处理指令" class="headerlink" title="用Python脚本运行OpenFOAM后处理指令"></a>用Python脚本运行OpenFOAM后处理指令</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.system(<span class="string">&#x27;postProcess -latestTime -func singleGraph&#x27;</span>)</span><br></pre></td></tr></table></figure>
+        
+        <br />
+        <div id="comment-container">
         </div>
-    </div>
-    
-    <div class="post-preview">
-        <div class="post-time">2022-02-28</div>
-        <div class="post-info">
-            <a href="/2022/02/28/Rankine体几何外形及无量纲化方法/">
-                <h3>
-                    Rankine体几何外形及无量纲化方法
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#CFD" title="CFD">CFD</a>
-                <span>/</span>
-                
-                
-            </p>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
         </div>
+
     </div>
-    
-    <div class="post-preview">
-        <div class="post-time">2022-02-27</div>
-        <div class="post-info">
-            <a href="/2022/02/27/怎样在hexo中输入公式/">
-                <h3>
-                    怎样在hexo中输入公式
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
-                <span>/</span>
-                
-                
-            </p>
-        </div>
-    </div>
-    
-    <div class="post-preview">
-        <div class="post-time">2022-02-23</div>
-        <div class="post-info">
-            <a href="/2022/02/23/我的zshrc设置及配置方法/">
-                <h3>
-                    我的zshrc设置及配置方法
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
-                <span>/</span>
-                
-                
-            </p>
-        </div>
-    </div>
-    
-    <div class="post-preview">
-        <div class="post-time">2021-12-02</div>
-        <div class="post-info">
-            <a href="/2021/12/02/脚本中binsh和binbash的含义与区别/">
-                <h3>
-                    脚本中#!/bin/sh和#!bin/bash的含义与区别
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
-                <span>/</span>
-                
-                
-            </p>
-        </div>
-    </div>
-    
-    <div class="post-preview">
-        <div class="post-time">2021-12-01</div>
-        <div class="post-info">
-            <a href="/2021/12/01/hello-world/">
-                <h3>
-                    Hello World
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
-                <span>/</span>
-                
-                
-            </p>
-        </div>
-    </div>
-    
 </div>
-<ul class="pager">
-    
-    <li class="previous">
-        <a href="/">&larr; Newer Posts</a>
-    </li>
-    
-    
-</ul>
 
     </div>
 </div>
@@ -341,7 +214,7 @@
     // We expose some of the variables needed by the front end
     window.hexo_search_path = "search.json"
     window.hexo_root = "/"
-    window.isPost = false
+    window.isPost = true
 </script>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
