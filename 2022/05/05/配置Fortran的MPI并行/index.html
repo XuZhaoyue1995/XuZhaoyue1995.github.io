@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="编程语言：Python, Fortran, C++">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        配置Fortran的MPI并行 - XuZhaoyueBlog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> CFD </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar ">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>许昭越</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Fortran%E5%9C%A8Linux%E4%B8%8B%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8C%E6%96%B9%E6%B3%95"><span class="toc-text">Fortran在Linux下编译运行方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E4%B8%AAFortran%E6%96%87%E4%BB%B6"><span class="toc-text">单个Fortran文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AAFortran%E6%96%87%E4%BB%B6"><span class="toc-text">多个Fortran文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mpi%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-text">Mpi的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%9D%E8%AF%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E6%9C%89GCC%E7%BC%96%E8%AF%91"><span class="toc-text">保证计算机中有GCC编译</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%AE%89%E8%A3%85"><span class="toc-text">自动安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85"><span class="toc-text">手动安装</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9C%A8-www-mpich-org-%E4%B8%8A%E4%B8%8B%E8%BD%BD%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85%E5%8C%85%E3%80%82"><span class="toc-text">在 www.mpich.org 上下载最新版本安装包。</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A7%A3%E5%8E%8B%E5%AE%89%E8%A3%85%E5%8C%85%E5%B9%B6%E5%88%87%E6%8D%A2%E8%87%B3%E8%A7%A3%E5%8E%8B%E7%9B%AE%E5%BD%95"><span class="toc-text">解压安装包并切换至解压目录</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83"><span class="toc-text">配置编译环境</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B0%86%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84%E8%AE%BE%E7%BD%AE%E4%B8%BA%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-text">将安装路径设置为环境变量</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%98%AF%E5%90%A6%E9%85%8D%E7%BD%AE%E6%88%90%E5%8A%9F"><span class="toc-text">查看是否配置成功</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%B2%E5%AE%89%E8%A3%85OpenFOAM%E6%83%85%E5%86%B5%E4%B8%8Bmpi%E9%85%8D%E7%BD%AE"><span class="toc-text">已安装OpenFOAM情况下mpi配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E5%9C%A8%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B8%AD%E4%B8%8Dsource-OpenFOAM%E7%9A%84%E6%96%87%E4%BB%B6%E5%A4%B9%EF%BC%8C%E5%B0%86%E5%85%B6%E6%B3%A8%E9%87%8A%E3%80%82"><span class="toc-text">方法一：在配置文件中不source OpenFOAM的文件夹，将其注释。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%89%EF%BC%9A%E8%B0%83%E7%94%A8mpif90-mpich%E7%BC%96%E8%AF%91%EF%BC%8Cmpirun-mpich%E6%89%A7%E8%A1%8C%E3%80%82"><span class="toc-text">方法二（推荐）：调用mpif90.mpich编译，mpirun.mpich执行。</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%B9%B6%E8%BF%90%E8%A1%8Cmpi-Fortran"><span class="toc-text">编译并运行mpi Fortran</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-text">编译</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C"><span class="toc-text">运行</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> CFD </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        配置Fortran的MPI并行
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-05-05 14:11:28</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#Fortran" title="Fortran">Fortran</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h3 id="Fortran在Linux下编译运行方法"><a href="#Fortran在Linux下编译运行方法" class="headerlink" title="Fortran在Linux下编译运行方法"></a>Fortran在Linux下编译运行方法</h3><p>我们可以使用gfortran编译Fortran。</p>
+<h4 id="单个Fortran文件"><a href="#单个Fortran文件" class="headerlink" title="单个Fortran文件"></a>单个Fortran文件</h4><p>运行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gfortran test.f95</span><br></pre></td></tr></table></figure><br>运行结果将生成<code>a.out</code>文件，执行程序<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./a.out</span><br></pre></td></tr></table></figure></p>
+<h4 id="多个Fortran文件"><a href="#多个Fortran文件" class="headerlink" title="多个Fortran文件"></a>多个Fortran文件</h4><p>当我们有多个Fortran文件需要编译时，我们需要先编译再链接成可执行文件。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gfortran -c test1.f90 test2.f90</span><br><span class="line">gfortran -o exe *.o</span><br></pre></td></tr></table></figure><br>将生成可执行文件<code>exe</code>。</p>
+<h3 id="Mpi的配置"><a href="#Mpi的配置" class="headerlink" title="Mpi的配置"></a>Mpi的配置</h3><h4 id="保证计算机中有GCC编译"><a href="#保证计算机中有GCC编译" class="headerlink" title="保证计算机中有GCC编译"></a>保证计算机中有GCC编译</h4><h4 id="自动安装"><a href="#自动安装" class="headerlink" title="自动安装"></a>自动安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install mpich</span><br></pre></td></tr></table></figure>
+<h4 id="手动安装"><a href="#手动安装" class="headerlink" title="手动安装"></a>手动安装</h4><h5 id="在-www-mpich-org-上下载最新版本安装包。"><a href="#在-www-mpich-org-上下载最新版本安装包。" class="headerlink" title="在 www.mpich.org 上下载最新版本安装包。"></a>在 www.mpich.org 上下载最新版本安装包。</h5><h5 id="解压安装包并切换至解压目录"><a href="#解压安装包并切换至解压目录" class="headerlink" title="解压安装包并切换至解压目录"></a>解压安装包并切换至解压目录</h5><h5 id="配置编译环境"><a href="#配置编译环境" class="headerlink" title="配置编译环境"></a>配置编译环境</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure -prefix=/usr/<span class="built_in">local</span>/mpich</span><br></pre></td></tr></table></figure>
+<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<h5 id="将安装路径设置为环境变量"><a href="#将安装路径设置为环境变量" class="headerlink" title="将安装路径设置为环境变量"></a>将安装路径设置为环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bashrc</span><br><span class="line"><span class="built_in">export</span> PATH=/usr/<span class="built_in">local</span>/mpich :<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<h4 id="查看是否配置成功"><a href="#查看是否配置成功" class="headerlink" title="查看是否配置成功"></a>查看是否配置成功</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> mpicc</span><br></pre></td></tr></table></figure>
+<h3 id="已安装OpenFOAM情况下mpi配置"><a href="#已安装OpenFOAM情况下mpi配置" class="headerlink" title="已安装OpenFOAM情况下mpi配置"></a>已安装OpenFOAM情况下mpi配置</h3><p>在运行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> mpicc</span><br></pre></td></tr></table></figure><br>后，如果显示mpi已经安装在OpenFOAM中，则无需再次安装，在这种情况下，直接使用mpi将会报错：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">--------------------------------------------------------------------------</span><br><span class="line">Unfortunately, this installation of Open MPI was not compiled with</span><br><span class="line">Fortran support.  As such, the mpif90 compiler is non-functional.</span><br><span class="line">--------------------------------------------------------------------------</span><br></pre></td></tr></table></figure><br>解决方案</p>
+<h4 id="方法一：在配置文件中不source-OpenFOAM的文件夹，将其注释。"><a href="#方法一：在配置文件中不source-OpenFOAM的文件夹，将其注释。" class="headerlink" title="方法一：在配置文件中不source OpenFOAM的文件夹，将其注释。"></a>方法一：在配置文件中不source OpenFOAM的文件夹，将其注释。</h4><h4 id="方法二（推荐）：调用mpif90-mpich编译，mpirun-mpich执行。"><a href="#方法二（推荐）：调用mpif90-mpich编译，mpirun-mpich执行。" class="headerlink" title="方法二（推荐）：调用mpif90.mpich编译，mpirun.mpich执行。"></a>方法二（推荐）：调用mpif90.mpich编译，mpirun.mpich执行。</h4><h3 id="编译并运行mpi-Fortran"><a href="#编译并运行mpi-Fortran" class="headerlink" title="编译并运行mpi Fortran"></a>编译并运行mpi Fortran</h3><h4 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h4><p>编译时将上文编译Fortran的指令gfortran用mpif90代替即可，其他完全一致。</p>
+<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><p>执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mpirun -np [CoreNumber] ./exe</span><br></pre></td></tr></table></figure><br><code>[CoreNumber]</code>用核数替代，比如4。</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>  Theme <a target="_blank" rel="noopener" href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
