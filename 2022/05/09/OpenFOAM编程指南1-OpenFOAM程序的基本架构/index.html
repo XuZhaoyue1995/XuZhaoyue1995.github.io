@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="编程语言：Python, Fortran, C++">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        OpenFOAM编程指南1:OpenFOAM程序的基本架构 - XuZhaoyueBlog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> CFD </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar ">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>许昭越</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%8F%AF%E7%BC%96%E8%AF%91%E6%B1%82%E8%A7%A3%E5%99%A8%E6%96%87%E4%BB%B6"><span class="toc-text">创建可编译求解器文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Make%E6%96%87%E4%BB%B6%E5%A4%B9%E5%86%85%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90"><span class="toc-text">Make文件夹内文件解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#files"><span class="toc-text">files</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E8%A1%8C%E8%A1%A8%E7%A4%BA%E7%BC%96%E8%AF%91%E7%9A%84%E6%98%AFhelloWorld-C%E6%96%87%E4%BB%B6%E3%80%82"><span class="toc-text">第一行表示编译的是helloWorld.C文件。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E8%A1%8C%E8%A1%A8%E7%A4%BA%E7%94%9F%E6%88%90%E7%9A%84%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%90%8D%E4%B8%BAhelloWorld%E3%80%82"><span class="toc-text">第三行表示生成的可执行文件名为helloWorld。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#options"><span class="toc-text">options</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#EXE-INC-%E8%A1%A8%E7%A4%BA%E7%A8%8B%E5%BA%8F%E4%B8%AD%E5%A4%B4%E6%96%87%E4%BB%B6%E7%9A%84%E8%B7%AF%E5%BE%84"><span class="toc-text">EXE_INC&#x3D;表示程序中头文件的路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EXE-LIB-%E6%8C%87%E5%BA%93%E6%96%87%E4%BB%B6%E6%89%80%E5%9C%A8%E7%9B%AE%E5%BD%95"><span class="toc-text">EXE_LIB&#x3D;指库文件所在目录</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E7%A8%8B%E5%BA%8F%E5%B9%B6%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8C"><span class="toc-text">编写程序并编译运行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9helloWorld-C"><span class="toc-text">修改helloWorld.C</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-text">编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C"><span class="toc-text">运行</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> CFD </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        OpenFOAM编程指南1:OpenFOAM程序的基本架构
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-05-09 20:22:45</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#OpenFOAM" title="OpenFOAM">OpenFOAM</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h1 id="创建可编译求解器文件"><a href="#创建可编译求解器文件" class="headerlink" title="创建可编译求解器文件"></a>创建可编译求解器文件</h1><p>我们可以利用OpenFOAM自带的指令创建一个新的近乎空白的可编译文件，我们以<code>helloWorld</code>文件为例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foamNewApp helloWorld</span><br></pre></td></tr></table></figure><br><code>helloWorld</code>也将会是我们编译成功的求解器的名称。注意OpenFOAM的风格是第一个单词字母小写，随后每个新单词都大写。此时，将会生成一个<code>helloWorld</code>文件，文件中包含<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">├── Make</span><br><span class="line">│   ├── files</span><br><span class="line">│   └── options</span><br><span class="line">└── myFirstFoam.C</span><br></pre></td></tr></table></figure></p>
+<h1 id="Make文件夹内文件解析"><a href="#Make文件夹内文件解析" class="headerlink" title="Make文件夹内文件解析"></a>Make文件夹内文件解析</h1><h2 id="files"><a href="#files" class="headerlink" title="files"></a><code>files</code></h2><p><code>files</code>用来指定OpenFOAM进行顺序编译的文件名称及路径，以及生成的可执行文件。<br>打开文件<code>files</code>，有<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">helloWorld.C</span><br><span class="line"></span><br><span class="line">EXE = $(FOAM_USER_APPBIN)/helloWorld</span><br></pre></td></tr></table></figure></p>
+<h3 id="第一行表示编译的是helloWorld-C文件。"><a href="#第一行表示编译的是helloWorld-C文件。" class="headerlink" title="第一行表示编译的是helloWorld.C文件。"></a>第一行表示编译的是<code>helloWorld.C</code>文件。</h3><h3 id="第三行表示生成的可执行文件名为helloWorld。"><a href="#第三行表示生成的可执行文件名为helloWorld。" class="headerlink" title="第三行表示生成的可执行文件名为helloWorld。"></a>第三行表示生成的可执行文件名为<code>helloWorld</code>。</h3><p>当然这个可执行文件的名字可以根据你的需要进行更改。</p>
+<h2 id="options"><a href="#options" class="headerlink" title="options"></a><code>options</code></h2><p><code>options</code>用来指定OpenFOAM需要调用的外挂库的路径和名称。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">EXE_INC = \</span><br><span class="line">    -I$(LIB_SRC)/finiteVolume/lnInclude \</span><br><span class="line">    -I$(LIB_SRC)/meshTools/lnInclude</span><br><span class="line"></span><br><span class="line">EXE_LIBS = \</span><br><span class="line">    -lfiniteVolume \</span><br><span class="line">    -lmeshTools</span><br></pre></td></tr></table></figure></p>
+<h3 id="EXE-INC-表示程序中头文件的路径"><a href="#EXE-INC-表示程序中头文件的路径" class="headerlink" title="EXE_INC=表示程序中头文件的路径"></a><code>EXE_INC=</code>表示程序中头文件的路径</h3><p><code>-I$(LIB_SRC)/finiteVolume/lnInclude</code>表示头文件存在于<code>$(LIB_SRC)/finiteVolume/lnInclude</code>下。<code>$(LIB_SRC)</code>是一个环境变量，在OpenFOAM中等同于<code>$(FOAM_SRC)</code>，其真实的位置可以通过键<code>入echo $FOAM_SRC</code>来查看。<br>前面的<code>-I</code>没有解释，OpenFOAM必须要这样写。<br>后面的<code>\</code>，如果有换行的话，OpenFOAM必须要添加。如果没有换行，可以不添加。如果丢失<code>\</code>会报错。<br>同时注意，在提示错误之后，即使添加好<code>\</code>也依然会报错。这时候需要用<code>wclean</code>命令清空一下，再运行<code>wmake</code>。提醒：某些情况下如果Gcc编译器不匹配你的OpenFOAM版本号，也会出现类似问题。这也解释了，为什么比较高版本的OpenFOAM需要比较高版本的Gcc编译器。</p>
+<h3 id="EXE-LIB-指库文件所在目录"><a href="#EXE-LIB-指库文件所在目录" class="headerlink" title="EXE_LIB=指库文件所在目录"></a><code>EXE_LIB=</code>指库文件所在目录</h3><h1 id="编写程序并编译运行"><a href="#编写程序并编译运行" class="headerlink" title="编写程序并编译运行"></a>编写程序并编译运行</h1><h2 id="修改helloWorld-C"><a href="#修改helloWorld-C" class="headerlink" title="修改helloWorld.C"></a>修改<code>helloWorld.C</code></h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;fvCFD.H&quot;</span> <span class="comment">//对iostream进行包含，因为程序会用到</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> <span class="comment">//主程序函数头</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Info &lt;&lt; <span class="string">&quot;hello CFD&quot;</span> &lt;&lt; nl; <span class="comment">//cout表示输出，endl表示换行</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">//主程序结束</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是一段非常简单的C++代码，下面来具体分析一下。第一行<code>#include &quot;fvCFD.H&quot;</code>表示对<code>fvCFD.H</code>文件进行包含。OpenFOAM中<code>fvCFD.H</code>文件是一个非常大的框架，它把OpenFOAM中大部分的基本的类型都包含了，在初学不知道应该调用OpenFOAM具体的什么类型的时候，建议直接把<code>fvCFD.H</code>文件进行包含省去寻找具体头文件的过程。<br><code>Info</code>是OpenFOAM中用来输出的语句。不仅仅可以输出字符串，也可以输出其他各种的场（比如体向量场等）。后面的<code>nl</code>在OpenFOAM中用来表示换行，等同于C++中的<code>endl</code>。</p>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>编译输入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmake</span><br></pre></td></tr></table></figure></p>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>此时，编译完成后在<code>Make</code>文件夹内会生成可执行文件，进入该文件夹执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helloWorld</span><br></pre></td></tr></table></figure><br>可以得到结果<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Hello World</span><br><span class="line"></span><br><span class="line">End</span><br></pre></td></tr></table></figure><br>这就说明我们的程序已经成功运行了。</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>  Theme <a target="_blank" rel="noopener" href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
